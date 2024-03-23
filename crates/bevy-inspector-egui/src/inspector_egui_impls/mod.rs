@@ -3,6 +3,7 @@
 use crate::reflect_inspector::{errors::no_multiedit, InspectorUi};
 use bevy_reflect::{FromType, Reflect, TypePath, TypeRegistry};
 use bevy_utils::Instant;
+use smol_str::SmolStr;
 use std::{
     any::{Any, TypeId},
     borrow::Cow,
@@ -316,6 +317,7 @@ pub fn register_bevy_impls(type_registry: &mut TypeRegistry) {
       // add_of_with_many::<bevy_asset::Handle<bevy_render::mesh::Mesh>>(type_registry, many_unimplemented::<bevy_asset::Handle<bevy_render::mesh::Mesh>>);
       add::<bevy_render::view::RenderLayers>(type_registry);
     }
+    add::<SmolStr>(type_registry);
 }
 
 pub(crate) fn change_slider<T>(
