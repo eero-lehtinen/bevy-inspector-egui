@@ -240,6 +240,7 @@ impl InspectorUi<'_, '_> {
             ReflectMut::Map(value) => self.ui_for_reflect_map(value, ui, id, options),
             ReflectMut::Enum(value) => self.ui_for_enum(value, ui, id, options),
             ReflectMut::Value(value) => self.ui_for_value(value, ui, id, options),
+            ReflectMut::Set(_) => false,
         }
     }
 
@@ -288,6 +289,7 @@ impl InspectorUi<'_, '_> {
             ReflectRef::Map(value) => self.ui_for_reflect_map_readonly(value, ui, id, options),
             ReflectRef::Enum(value) => self.ui_for_enum_readonly(value, ui, id, options),
             ReflectRef::Value(value) => self.ui_for_value_readonly(value, ui, id, options),
+            ReflectRef::Set(_) => {}
         }
     }
 
@@ -369,6 +371,7 @@ impl InspectorUi<'_, '_> {
             }
             TypeInfo::Enum(info) => self.ui_for_enum_many(info, ui, id, options, values, projector),
             TypeInfo::Value(info) => self.ui_for_value_many(info, ui, id, options),
+            TypeInfo::Set(_) => false,
         }
     }
 }
