@@ -3,6 +3,7 @@ use bevy_ecs::entity::Entity;
 use bevy_ecs::world::CommandQueue;
 use bevy_ecs::world::World;
 use egui::Color32;
+use smol_str::SmolStr;
 use std::any::Any;
 
 #[cfg(feature = "bevy_render")]
@@ -338,6 +339,30 @@ impl InspectorPrimitive for RenderLayers {
     fn ui_readonly(&self, ui: &mut egui::Ui, _: &dyn Any, _: egui::Id, _: InspectorUi<'_, '_>) {
         for layer in self.iter() {
             ui.label(format!("- {layer}"));
+        }
+    }
+}
+
+impl InspectorPrimitive for SmolStr {
+    fn ui(&mut self, ui: &mut egui::Ui, _: &dyn Any, _: egui::Id, _: InspectorUi<'_, '_>) -> bool {
+        if self.contains('\n') {
+            let mut text = self.to_string();
+            let changed = ui.text_edit_multiline(&mut text).changed();
+            *self = text.into();
+            changed
+        } else {
+            let mut text = self.to_string();
+            let changed = ui.text_edit_singleline(&mut text).changed();
+            *self = text.into();
+            changed
+        }
+    }
+
+    fn ui_readonly(&self, ui: &mut egui::Ui, _: &dyn Any, _: egui::Id, _: InspectorUi<'_, '_>) {
+        if self.contains('\n') {
+            ui.text_edit_multiline(&mut self.as_str());
+        } else {
+            ui.text_edit_singleline(&mut self.as_str());
         }
     }
 }

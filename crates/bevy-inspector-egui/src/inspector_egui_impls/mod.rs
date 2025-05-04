@@ -6,6 +6,7 @@ use crate::{
 };
 use bevy_platform::time::Instant;
 use bevy_reflect::{FromType, PartialReflect, Reflect, TypePath, TypeRegistry};
+use smol_str::SmolStr;
 use std::{
     any::{Any, TypeId},
     borrow::Cow,
@@ -329,6 +330,7 @@ pub fn register_bevy_impls(type_registry: &mut TypeRegistry) {
     }
 
     add::<uuid::Uuid>(type_registry);
+    add::<SmolStr>(type_registry);
 }
 
 pub(crate) fn change_slider<T>(
